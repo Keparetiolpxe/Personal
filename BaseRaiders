@@ -74,10 +74,10 @@ local Tab2 = window:tab("Farming")
 local button = Tab2:button('TP to pro servers', 'Requires no kills', function()
     game:GetService("TeleportService"):Teleport(3452032668)
 end)
-local Dropdown = Tab1:dropdown("To explode","Pick a player",plrsTable,"",function(value)
+local Dropdown = Tab2:dropdown("To TP","Pick a player",plrsTable,"",function(value)
     A2HPlayer = value
 end)
-local Button = Tab1:button('Reset player list', 'Use when someones missing or there is extra', function()
+local Button = Tab2:button('Reset player list', 'Use when someones missing or there is extra', function()
     local plrsTable = {}
     for i,v in game:GetService('Players'):GetPlayers() do
         table.insert(plrsTable, v.Name)
