@@ -1,3 +1,4 @@
+
 local wi = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("WeaponInteraction")
 wi:InvokeServer('None', true)
 local skinSequence = 1
