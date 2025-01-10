@@ -1,0 +1,63 @@
+--preiniting
+local wi = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("WeaponInteraction")
+wi:InvokeServer('None', true)
+local skinSequence = 1
+
+
+local Library,helping = loadstring(game:HttpGet("https://raw.githubusercontent.com/Keparetiolpxe/KepaUI/main/Source"))()
+local D2P = false
+local D2PName = ''
+local D2PTracking = {}
+local heart = game:GetService('RunService').Heartbeat:Connect(function()
+    if D2P and game:GetService('Players'):FindFirstChild(D2PName) then
+        for i,dyna in pairs(workspace:GetChildren()) do
+            if dyna.Name == 'FuseBomb' then
+                if not table.find(D2PTracking, dyna) and workspace:FindFirstChild(D2PName) and dyna.creator.Value == game.Players.LocalPlayer then
+                    table.insert(D2PTracking, dyna)
+                    coroutine.wrap(function()
+                        task.wait(4.5)
+                        dyna.CFrame = workspace[D2PName].PrimaryPart.CFrame
+                    end)()
+                end
+            end
+        end
+    end
+end)
+local window = Library:window("Base Raiders",1.0)
+local Tab1 = window:tab("Dynamite Fun")
+local Label = Tab1:label("Use at your own risk as the game will show whos raiding","When killing")
+local plrsTable = {}
+for i,v in game:GetService('Players'):GetPlayers() do
+    table.insert(plrsTable, v.Name)
+end
+local Dropdown = Tab1:dropdown("To explode","Pick a player",plrsTable,"",function(value)
+    D2PName = value
+end)
+
+local Toggle = Tab1:toggle("Dynamite to player","Sends YOUR dynamite to the player before explosion",false,function(bool)
+    D2P = bool
+end)
+local Button = Tab1:button('Reset player list', 'Use when someones missing or there is extra', function()
+    local plrsTable = {}
+    for i,v in game:GetService('Players'):GetPlayers() do
+        table.insert(plrsTable, v.Name)
+    end
+    Dropdown:ChangeList(plrsTable)
+end)
+local Button = Tab1:button("Reset Cooldown","Sends YOUR dynamite to the player before explosion", function(bool)
+    local tool = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
+    if skinSequence == 2 then
+        wi:InvokeServer('None', true)
+        skinSequence = 1
+    elseif skinSequence == 1 then
+        wi:InvokeServer('Black', true)
+        skinSequence = 2
+    end
+    if tool then
+        game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):EquipTool(game.Players.LocalPlayer.Backpack[tool.Name])
+    end
+end)
+local Button = Tab1:button("Click before closing","basically makes sure that nothings gonna bother after", function()
+    heart:Disconnect()
+end)
+local UIBreaker = Tab1:uibreaker()
