@@ -1,8 +1,10 @@
-
 local wi = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("WeaponInteraction")
 wi:InvokeServer('None', true)
 local skinSequence = 1
 
+local A2H, humanoidPowers = false, false
+local A2HName = ''
+local A2HPlayer = ''
 local curSpeed = 16
 local curJump = 50
 local Library,helping = loadstring(game:HttpGet("https://raw.githubusercontent.com/Keparetiolpxe/KepaUI/main/SourceV2"))()
@@ -23,10 +25,13 @@ local heart = game:GetService('RunService').Heartbeat:Connect(function()
             end
         end
     end
-    if helping:cnnil() then
+    if helping:cnnil() and humanoidPowers then
         local human = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
         human.WalkSpeed = curSpeed
         human.JumpPower = curJump
+    end
+    if A2H and workspace:FindFirstChild(A2HPlayer) and workspace[A2HPlayer]:FindFirstChild(A2HName) and helping:cnnil() then
+        game.Players.LocalPlayer.Character.PrimaryPart.CFrame = workspace[A2HPlayer][A2HName].Handle
     end
 end)
 local window = Library:window("Base Raiders",1.0)
@@ -50,7 +55,7 @@ local Button = Tab1:button('Reset player list', 'Use when someones missing or th
     end
     Dropdown:ChangeList(plrsTable)
 end)
-local Keybind = Tab1:keybind("Reset Cooldown","Sends YOUR dynamite to the player before explosion",Enum.KeyCode.Q ,function(bool)
+local Keybind = Tab1:keybind("Reset Cooldown","Resets dynamite cooldown, etc., MUST HAVE BLACK WEAPON SKIN",Enum.KeyCode.Q ,function(bool)
     local tool = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
     if skinSequence == 2 then
         wi:InvokeServer('None', true)
@@ -63,13 +68,44 @@ local Keybind = Tab1:keybind("Reset Cooldown","Sends YOUR dynamite to the player
         game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid'):EquipTool(game.Players.LocalPlayer.Backpack[tool.Name])
     end
 end)
-local Button = Tab1:button("Click before closing","basically makes sure that nothings gonna bother after", function()
-    heart:Disconnect()
+
+
+local Tab2 = window:tab("Farming")
+local button = Tab2:button('TP to pro servers', 'Requires no kills', function()
+    game:GetService("TeleportService"):Teleport(3452032668)
 end)
+local Dropdown = Tab1:dropdown("To explode","Pick a player",plrsTable,"",function(value)
+    A2HPlayer = value
+end)
+local Button = Tab1:button('Reset player list', 'Use when someones missing or there is extra', function()
+    local plrsTable = {}
+    for i,v in game:GetService('Players'):GetPlayers() do
+        table.insert(plrsTable, v.Name)
+    end
+    Dropdown:ChangeList(plrsTable)
+end)
+local box = Tab2:box('Attach to weapon called', 'Name Weapon, attaches YOU to someone', '', function(toAttach)
+    A2HName = toAttach
+end)
+local toggle = Tab2:toggle('Attach to weapon', 'Turn on/off', false, function(tog)
+    A2H = tog
+end)
+
+
+local Tab1 = window:tab('Humanoid')
 local Slider = Tab1:slider("Speed","Adjust your speed during planting",16,20,16,0.1,function(value)--Name,Description,minValue,maxValue,CurrentValue,Increment,callback(Value) - Function on changed slider with returned value
     curSpeed = value
 end)
 local Slider = Tab1:slider("Jump Power","Adjust your jumping during planting",50,75,50,0.1,function(value)--Name,Description,minValue,maxValue,CurrentValue,Increment,callback(Value) - Function on changed slider with returned value
     curSpeed = value
 end)
+local toggle = Tab1:toggle('Apply changes', 'Will sliders above have any effect', false, function(tog)
+    humanoidPowers = tog
+end)
+
+
+local Tab1 = window:tab('Close')
 local UIBreaker = Tab1:uibreaker()
+local button = Tab1:button("Click to close", 'Safely closes Exploit', function()
+    heart:Disconnect()
+end)
