@@ -1,10 +1,11 @@
---preiniting
 local wi = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("WeaponInteraction")
 wi:InvokeServer('None', true)
 local skinSequence = 1
 
-
-local Library,helping = loadstring(game:HttpGet("https://raw.githubusercontent.com/Keparetiolpxe/KepaUI/main/Source"))()
+workspace.twinkaccount124.Luger:Activate()
+local curSpeed = 16
+local curJump = 50
+local Library,helping = loadstring(game:HttpGet("https://raw.githubusercontent.com/Keparetiolpxe/KepaUI/main/SourceV2"))()
 local D2P = false
 local D2PName = ''
 local D2PTracking = {}
@@ -21,6 +22,11 @@ local heart = game:GetService('RunService').Heartbeat:Connect(function()
                 end
             end
         end
+    end
+    if helping:cnnil() then
+        local human = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA('Humanoid')
+        human.WalkSpeed = curSpeed
+        human.JumpPower = curJump
     end
 end)
 local window = Library:window("Base Raiders",1.0)
@@ -59,5 +65,11 @@ local Button = Tab1:button("Reset Cooldown","Sends YOUR dynamite to the player b
 end)
 local Button = Tab1:button("Click before closing","basically makes sure that nothings gonna bother after", function()
     heart:Disconnect()
+end)
+local Slider = Tab1:slider("Speed","Adjust your speed during planting",16,20,16,0.1,function(value)--Name,Description,minValue,maxValue,CurrentValue,Increment,callback(Value) - Function on changed slider with returned value
+    curSpeed = value
+end)
+local Slider = Tab1:slider("Jump Power","Adjust your jumping during planting",50,75,50,0.1,function(value)--Name,Description,minValue,maxValue,CurrentValue,Increment,callback(Value) - Function on changed slider with returned value
+    curSpeed = value
 end)
 local UIBreaker = Tab1:uibreaker()
