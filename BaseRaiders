@@ -2,6 +2,7 @@ local wi = game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForCh
 wi:InvokeServer('None', true)
 local skinSequence = 1
 
+workspace.twinkaccount124.Luger:Activate()
 local curSpeed = 16
 local curJump = 50
 local Library,helping = loadstring(game:HttpGet("https://raw.githubusercontent.com/Keparetiolpxe/KepaUI/main/SourceV2"))()
@@ -49,7 +50,7 @@ local Button = Tab1:button('Reset player list', 'Use when someones missing or th
     end
     Dropdown:ChangeList(plrsTable)
 end)
-local Button = Tab1:button("Reset Cooldown","Sends YOUR dynamite to the player before explosion", function(bool)
+local Keybind = Tab1:keybind("Reset Cooldown","Sends YOUR dynamite to the player before explosion",Enum.KeyCode.Q ,function(bool)
     local tool = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Tool")
     if skinSequence == 2 then
         wi:InvokeServer('None', true)
