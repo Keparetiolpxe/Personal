@@ -1,4 +1,4 @@
-print("correct version - 1.66")
+print("correct version - 1.7")
 
 local function reset()
     pcall(function()
@@ -88,5 +88,7 @@ local function run()
 end
 while true do
     reset()
-    run()
+    pcall(function()
+        run()
+    end)
 end
