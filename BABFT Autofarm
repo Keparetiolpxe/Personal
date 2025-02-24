@@ -1,4 +1,4 @@
-print("correct version - 1.0")
+print("correct version - 1.1")
 local function run()
     local stageFolder = workspace.BoatStages.NormalStages
     local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
@@ -63,19 +63,15 @@ local function run()
     claimStage(2)
     collecting = false
     claimStage(3)
+    game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
+        repeat
+            task.wait(0.1)
+        until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
+        run()
+    end)
     for i=4,9 do
-        if not humP then
-            repeat
-                task.wait(0.1)
-            until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
-            run()
-        end
         claimStage(i)
     end
     reset()
-    repeat
-        task.wait(0.1)
-    until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
-    run()
 end
 run()
