@@ -1,4 +1,4 @@
-print("correct version - 1.71")
+print("correct version - 1.72")
 
 local function reset()
     pcall(function()
@@ -16,6 +16,7 @@ game:GetService("RunService").Heartbeat:Connect(function(delta)
     runTimeA += delta
     if runTimeA >= 30 then
         reset()
+        runTimeA = 0
     end
 end)
 
@@ -32,14 +33,15 @@ local function run()
     local chestTrigger = stageFolder.TheEnd.GoldenChest.Trigger
     local chestFirstCF = chestTrigger.CFrame
     local holdPart
-    if not workspace:FindFirstChild("HoldPartAFK") then
+    for stage = 2, 9 do
         holdPart = Instance.new("Part",workspace)
         holdPart.Size = Vector3.new(5,1,5)
         holdPart.Anchored = true
         holdPart.Name = 'HoldPartAFK'
-    else
-        holdPart = workspace.HoldPartAFK
-    end
+
+        local stageP = stageFolder["CaveStage"..stage].DarknessPart
+        holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
+    end 
     
     local collecting = true
     
@@ -58,7 +60,6 @@ local function run()
     local function claimStage(stage)
         local lastGold = goldVar.Value
         local stageP = stageFolder["CaveStage"..stage].DarknessPart
-        holdPart.CFrame = stageP.CFrame-Vector3.new(0,5,0)
         pcall(function()
             while task.wait(0.1) do
                 if collecting then
@@ -69,7 +70,7 @@ local function run()
                     end
                 else
                     humP.CFrame = stageP.CFrame
-                    task.wait(2)
+                    task.wait(2.5)
                     claimChest()
                     task.wait(1)
                     collecting = true
