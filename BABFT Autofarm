@@ -1,16 +1,20 @@
-print("correct version - 1.73")
+print("correct version - 2.0.0")
+
+local plr = game:GetService("Players").LocalPlayer
+local stageFolder = workspace.BoatStages.NormalStages
+local goldVar = plr.Data.Gold
+local runTimeA = 0
+
 
 local function reset()
     pcall(function()
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") then
-            game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
-            game.Players.LocalPlayer.Character.PrimaryPart:Destroy()
-            game.Players.LocalPlayer.Character.Head:Destroy()
+        if plr.Character and plr.Character:FindFirstChildWhichIsA("Humanoid") then
+            plr.Character.PrimaryPart.CFrame = CFrame.new(0,-10000,0,1,0,0,0,1,0,0,0,1)
         end
     end)
 end
 
-local runTimeA = 0
+
 
 game:GetService("RunService").Heartbeat:Connect(function(delta)
     runTimeA += delta
@@ -19,82 +23,40 @@ game:GetService("RunService").Heartbeat:Connect(function(delta)
         runTimeA = 0
     end
 end)
+for stage = 2, 9 do
+    holdPart = Instance.new("Part",workspace)
+    holdPart.Size = Vector3.new(5,1,5)
+    holdPart.Anchored = true
+    holdPart.Name = 'HoldPartAFK'
+
+    local stageP = stageFolder["CaveStage"..stage].DarknessPart
+    holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
+end 
+
+local function collectGold()
+    workspace:WaitForChild("ClaimRiverResultsGold"):FireServer()
+end
 
 local function run()
     print("run completed in "..runTimeA)
     runTimeA = 0
-    repeat
-        task.wait(0.1)
-    until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and game.Players.LocalPlayer.Character.PrimaryPart
-
-    game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
-        repeat
-            task.wait(0.1)
-        until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
-        run()
-        return
-    end)
-
-    local stageFolder = workspace.BoatStages.NormalStages
-    local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
-    local humP = game.Players.LocalPlayer.Character.HumanoidRootPart
-    local chestTrigger = stageFolder.TheEnd.GoldenChest.Trigger
-    local chestFirstCF = chestTrigger.CFrame
-    local holdPart
-    for stage = 2, 9 do
-        holdPart = Instance.new("Part",workspace)
-        holdPart.Size = Vector3.new(5,1,5)
-        holdPart.Anchored = true
-        holdPart.Name = 'HoldPartAFK'
-
-        local stageP = stageFolder["CaveStage"..stage].DarknessPart
-        holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
-    end 
     
-    local collecting = true
-    
-    local function collectGold()
-        workspace:WaitForChild("ClaimRiverResultsGold"):FireServer()
-    end
-    
-    local function claimChest()
-        chestTrigger.CFrame = humP.CFrame
-        task.wait(0.3)
-        chestTrigger.CFrame = chestFirstCF
-    end
-    
-    
+    local humP = plr.Character.PrimaryPart
     
     local function claimStage(stage)
         local lastGold = goldVar.Value
         local stageP = stageFolder["CaveStage"..stage].DarknessPart
         pcall(function()
+            humP.CFrame = stageP.CFrame
             while task.wait(0.1) do
-                if collecting then
-                    humP.CFrame = stageP.CFrame
-                    collectGold()
-                    if goldVar.Value ~= lastGold then
-                        break
-                    end
-                else
-                    humP.CFrame = stageP.CFrame
-                    task.wait(2.5)
-                    claimChest()
-                    task.wait(1)
-                    collecting = true
-                    collectGold()
+                collectGold()
+                if goldVar.Value ~= lastGold then
                     break
                 end
             end
         end)
     end
-    claimStage(2)
-    claimStage(3)
-    claimStage(4)
-    collecting = false
-    claimStage(5)
-    
-    for i=6,9 do
+    for i=2,9 do
         claimStage(i)
     end
     reset()
