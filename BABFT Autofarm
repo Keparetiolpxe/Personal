@@ -1,4 +1,4 @@
-print("correct version - 1.6")
+print("correct version - 1.61")
 local function run()
     local stageFolder = workspace.BoatStages.NormalStages
     local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
