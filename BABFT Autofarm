@@ -1,4 +1,4 @@
-print("correct version - 2.0.0")
+print("correct version - 2.0.1")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -10,6 +10,7 @@ local function reset()
     pcall(function()
         if plr.Character and plr.Character:FindFirstChildWhichIsA("Humanoid") then
             plr.Character.PrimaryPart.CFrame = CFrame.new(0,-10000,0,1,0,0,0,1,0,0,0,1)
+            plr.Character.Head:Destroy()
         end
     end)
 end
