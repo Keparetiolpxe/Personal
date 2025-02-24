@@ -1,4 +1,4 @@
-print("correct version - 2.1.1")
+print("correct version - 2.1.2")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -25,30 +25,9 @@ for stage = 2, 9 do
     local stageP = stageFolder["CaveStage"..stage].DarknessPart
     holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
 end 
+
 local function collectGold()
     workspace:WaitForChild("ClaimRiverResultsGold"):FireServer()
-end
-local function claimStage(stage)
-    repeat
-        task.wait(0.1)
-    until plr.Character and plr.Character.Head and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0
-    local lastGold = goldVar.Value
-    local stageP = stageFolder["CaveStage"..stage].DarknessPart
-    pcall(function()
-        plr.Character.PrimaryPart.CFrame = stageP.CFrame
-        local iters = 0
-        while task.wait(0.1) do
-            iters += 1
-            if iters >= 150 then
-                reset()
-                break
-            end
-            collectGold()
-            if goldVar.Value ~= lastGold then
-                break
-            end
-        end
-    end)
 end
 local function getChest()
     if plr.Character and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0 then
@@ -57,9 +36,40 @@ local function getChest()
         trig.CFrame = mainPos
     end
 end
+
+local function claimStage(stage)
+    repeat
+        task.wait(0.1)
+    until plr.Character and plr.Character.Head and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0
+    local lastGold = goldVar.Value
+    local stageP = stageFolder["CaveStage"..stage].DarknessPart
+    if stage ~= 4 then
+        pcall(function()
+            plr.Character.PrimaryPart.CFrame = stageP.CFrame
+            local iters = 0
+            while task.wait(0.1) do
+                iters += 1
+                if iters >= 150 then
+                    reset()
+                    break
+                end
+                collectGold()
+                if goldVar.Value ~= lastGold then
+                    break
+                end
+            end
+        end)
+    else
+        pcall(function()
+            task.wait(2)
+            getChest()
+            collectGold()
+            return
+        end)
+    end
+end
 local function run()
     for i=2,9 do
-        if i == 4 then getChest() end
         claimStage(i)
     end
 end
