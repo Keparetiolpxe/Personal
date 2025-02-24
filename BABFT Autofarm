@@ -1,4 +1,4 @@
-print("correct version - 2.1.0")
+print("correct version - 2.1.1")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -39,7 +39,7 @@ local function claimStage(stage)
         local iters = 0
         while task.wait(0.1) do
             iters += 1
-            if iters >= 40 then
+            if iters >= 150 then
                 reset()
                 break
             end
