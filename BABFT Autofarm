@@ -1,4 +1,4 @@
-print("correct version - 2.1.5")
+print("correct version - 2.1.6")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -23,6 +23,7 @@ for stage = 2, 9 do
     holdPart.Anchored = true
     holdPart.Name = 'HoldPartAFK'
     local stageP = stageFolder["CaveStage"..stage].DarknessPart
+    stageP.Transparency = 0.75
     holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
 end 
 
