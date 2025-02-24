@@ -1,4 +1,4 @@
-print("correct version - 2.1.4")
+print("correct version - 2.1.5")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -61,6 +61,7 @@ local function claimStage(stage)
         end)
     else
         pcall(function()
+            plr.Character.PrimaryPart.CFrame = stageP.CFrame
             task.wait(3)
             getChest()
             task.wait(1)
