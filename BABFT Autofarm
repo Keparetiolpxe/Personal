@@ -1,4 +1,4 @@
-print("correct version - 1.1")
+print("correct version - 1.0")
 local function run()
     local stageFolder = workspace.BoatStages.NormalStages
     local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
@@ -59,17 +59,19 @@ local function run()
             end
         end)
     end
-    
-    claimStage(2)
-    collecting = false
-    claimStage(3)
     game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Died:Connect(function()
         repeat
             task.wait(0.1)
         until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
         run()
+        return
     end)
-    for i=4,9 do
+    claimStage(2)
+    claimStage(3)
+    collecting = false
+    claimStage(4)
+    
+    for i=5,9 do
         claimStage(i)
     end
     reset()
