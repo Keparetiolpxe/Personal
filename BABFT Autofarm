@@ -61,7 +61,7 @@ local function claimStage(stage)
         end)
     else
         pcall(function()
-            task.wait(2)
+            task.wait(3)
             getChest()
             collectGold()
             return
