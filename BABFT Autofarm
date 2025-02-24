@@ -1,4 +1,4 @@
-print("correct version - 1.0")
+print("correct version - 1.4")
 local function run()
     local stageFolder = workspace.BoatStages.NormalStages
     local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
@@ -7,7 +7,7 @@ local function run()
     local chestFirstCF = chestTrigger.CFrame
     local holdPart
     if not workspace:FindFirstChild("HoldPartAFK") then
-        local holdPart = Instance.new("Part",workspace)
+        holdPart = Instance.new("Part",workspace)
         holdPart.Size = Vector3.new(5,1,5)
         holdPart.Anchored = true
         holdPart.Name = 'HoldPartAFK'
@@ -28,11 +28,13 @@ local function run()
     end
     
     local function reset()
-        if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") then
-            game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
-            game.Players.LocalPlayer.Character.PrimaryPart:Destroy()
-            game.Players.LocalPlayer.Character.Head:Destroy()
-        end
+        pcall(function()
+            if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") then
+                game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").Health = 0
+                game.Players.LocalPlayer.Character.PrimaryPart:Destroy()
+                game.Players.LocalPlayer.Character.Head:Destroy()
+            end
+        end)
     end
     
     local function claimStage(stage)
@@ -51,8 +53,8 @@ local function run()
                     humP.CFrame = stageP.CFrame
                     task.wait(2)
                     claimChest()
-                    task.wait(1)--collecting = true
-                    
+                    task.wait(1)
+
                     collectGold()
                     break
                 end
