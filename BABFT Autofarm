@@ -1,4 +1,4 @@
-print("correct version - 1.63")
+print("correct version - 1.64")
 
 local function reset()
     pcall(function()
@@ -10,6 +10,10 @@ local function reset()
     end)
 end
 local function run()
+    repeat
+        task.wait(0.1)
+    until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+
     local stageFolder = workspace.BoatStages.NormalStages
     local goldVar = game:GetService("Players").LocalPlayer.Data.Gold
     local humP = game.Players.LocalPlayer.Character.HumanoidRootPart
