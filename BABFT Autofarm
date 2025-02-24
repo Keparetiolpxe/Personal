@@ -1,4 +1,4 @@
-print("correct version - 1.65")
+print("correct version - 1.66")
 
 local function reset()
     pcall(function()
@@ -77,10 +77,11 @@ local function run()
     end)
     claimStage(2)
     claimStage(3)
-    collecting = false
     claimStage(4)
+    collecting = false
+    claimStage(5)
     
-    for i=5,9 do
+    for i=6,9 do
         claimStage(i)
     end
     reset()
