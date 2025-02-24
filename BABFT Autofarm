@@ -1,4 +1,4 @@
-print("correct version - 2.1.2")
+print("correct version - 2.1.3")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
@@ -43,7 +43,7 @@ local function claimStage(stage)
     until plr.Character and plr.Character.Head and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0
     local lastGold = goldVar.Value
     local stageP = stageFolder["CaveStage"..stage].DarknessPart
-    if stage ~= 4 then
+    if stage ~= 5 then
         pcall(function()
             plr.Character.PrimaryPart.CFrame = stageP.CFrame
             local iters = 0
