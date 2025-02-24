@@ -1,66 +1,67 @@
-print("correct version - 2.0.1")
+print("correct version - 2.1.0")
 
 local plr = game:GetService("Players").LocalPlayer
 local stageFolder = workspace.BoatStages.NormalStages
 local goldVar = plr.Data.Gold
 local runTimeA = 0
-
+local trig = stageFolder.TheEnd.GoldenChest.Trigger
+local mainPos = trig.CFrame
 
 local function reset()
     pcall(function()
         if plr.Character and plr.Character:FindFirstChildWhichIsA("Humanoid") then
             plr.Character.PrimaryPart.CFrame = CFrame.new(0,-10000,0,1,0,0,0,1,0,0,0,1)
             plr.Character.Head:Destroy()
+            plr.Character.PrimaryPart:Destroy()
+            task.wait(1)
         end
     end)
 end
-
-
-
-game:GetService("RunService").Heartbeat:Connect(function(delta)
-    runTimeA += delta
-    if runTimeA >= 30 then
-        reset()
-        runTimeA = 0
-    end
-end)
 for stage = 2, 9 do
     holdPart = Instance.new("Part",workspace)
     holdPart.Size = Vector3.new(5,1,5)
     holdPart.Anchored = true
     holdPart.Name = 'HoldPartAFK'
-
     local stageP = stageFolder["CaveStage"..stage].DarknessPart
     holdPart.CFrame = stageP.CFrame-Vector3.new(0,4,0)
 end 
-
 local function collectGold()
     workspace:WaitForChild("ClaimRiverResultsGold"):FireServer()
 end
-
-local function run()
-    print("run completed in "..runTimeA)
-    runTimeA = 0
-    
-    local humP = plr.Character.PrimaryPart
-    
-    local function claimStage(stage)
-        local lastGold = goldVar.Value
-        local stageP = stageFolder["CaveStage"..stage].DarknessPart
-        pcall(function()
-            humP.CFrame = stageP.CFrame
-            while task.wait(0.1) do
-                collectGold()
-                if goldVar.Value ~= lastGold then
-                    break
-                end
+local function claimStage(stage)
+    repeat
+        task.wait(0.1)
+    until plr.Character and plr.Character.Head and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0
+    local lastGold = goldVar.Value
+    local stageP = stageFolder["CaveStage"..stage].DarknessPart
+    pcall(function()
+        plr.Character.PrimaryPart.CFrame = stageP.CFrame
+        local iters = 0
+        while task.wait(0.1) do
+            iters += 1
+            if iters >= 40 then
+                reset()
+                break
             end
-        end)
+            collectGold()
+            if goldVar.Value ~= lastGold then
+                break
+            end
+        end
+    end)
+end
+local function getChest()
+    if plr.Character and plr.Character.PrimaryPart and plr.Character.Humanoid.Health > 0 then
+        trig.CFrame = plr.Character.PrimaryPart.CFrame
+        task.wait(0.3)
+        trig.CFrame = mainPos
     end
+end
+local function run()
     for i=2,9 do
+        if i == 4 then getChest() end
         claimStage(i)
     end
-    reset()
 end
 while true do
     reset()
