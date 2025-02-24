@@ -50,8 +50,8 @@ local function run()
                     humP.CFrame = stageP.CFrame
                     task.wait(2)
                     claimChest()
-                    task.wait(1)--collecting = true
-                    
+                    task.wait(1)
+                    collecting = true
                     collectGold()
                     break
                 end
