@@ -50,8 +50,8 @@ local function run()
                     humP.CFrame = stageP.CFrame
                     task.wait(2)
                     claimChest()
-                    task.wait(1)
-                    collecting = true
+                    task.wait(1)--collecting = true
+                    
                     collectGold()
                     break
                 end
@@ -63,11 +63,16 @@ local function run()
     collecting = false
     claimStage(3)
     for i=4,9 do
+        if not humP then
+            repeat
+                task.wait(0.1)
+            until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
+            run()
+        end
         claimStage(i)
     end
-
     reset()
-    repeat 
+    repeat
         task.wait(0.1)
     until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.PrimaryPart
     run()
